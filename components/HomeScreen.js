@@ -1,10 +1,34 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { useNavigation } from '@react-navigation/core';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { auth } from '../firebase'
 
-export default Home = () => {
+const HomeScreen = () => {
+    const navigation = useNavigation()
+    const handleSignOut = () => {
+        auth
+            .signOut()
+            .then(() => {
+                navigation.replace('Login')
+            })
+    }
+
     return (
-        <View>
-            <Text>Open up App.js to start working on your app!</Text>
+        <View style={styles.container}>
+            <Text>Email: {auth.currentUser?.email}</Text>
+            <TouchableOpacity>
+                <Text style={styles.buttonText} onPress={handleSignOut}>Signout</Text>
+            </TouchableOpacity>
         </View>
     )
 }
+
+export default HomeScreen
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
